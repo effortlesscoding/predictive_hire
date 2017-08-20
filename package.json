@@ -2,7 +2,7 @@
   "name": "predictive_hiring",
   "version": "1.0.0",
   "description": "",
-  "main": "/apps/web_service/server.js",
+  "main": "/apps/webService/server.js",
   "directories": {
     "test": "tests"
   },
@@ -17,12 +17,13 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
+    "start": "node apps/webService/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jeenius <frankensteinruo@gmail.com>",
   "license": "ISC",
   "_moduleAliases": {
-    "@web_service": "./apps/web_service",
+    "@webService": "./apps/webService",
     "@config": "./config"
   }
 }

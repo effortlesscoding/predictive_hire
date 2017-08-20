@@ -52,40 +52,36 @@ describe('orderFulfillmentOptions', function() {
       OrderFulfillmentOptions.getOptions(
         { productCode: 'PORK-BUN-1', size: 12 },
         availablePackages,
-      ).then((options) => {
-        console.log('options', options)
-        done(new Error('Unexpected success'))
-      }).catch((e) => done())
+      )
+      .then((options) => done(new Error('Unexpected success')))
+      .catch((e) => done())
     })
 
     it('should respond with an error if an order with size 0 is supplied that cannot be fulfilled by available packages', (done) => {
       OrderFulfillmentOptions.getOptions(
         { productCode: 'PORK-BUN-1', size: 0, },
         availablePackages,
-      ).then((options) => {
-        console.log('options', options)
-        done(new Error('Unexpected success'))
-      }).catch((e) => done())
+      )
+      .then((options) => done(new Error('Unexpected success')))
+      .catch((e) => done())
     })
 
     it('should respond with an error if size is not specified', (done) => {
       OrderFulfillmentOptions.getOptions(
         { productCode: 'PORK-BUN-1', },
         availablePackages,
-      ).then((options) => {
-        console.log('options', options)
-        done(new Error('Unexpected success'))
-      }).catch((e) => done())
+      )
+      .then((options) => done(new Error('Unexpected success')))
+      .catch((e) => done())
     })
 
     it('should respond with an error if size is not an integer', (done) => {
       OrderFulfillmentOptions.getOptions(
         { productCode: 'PORK-BUN-1', size: 0.34, },
         availablePackages,
-      ).then((options) => {
-        console.log('options', options)
-        done(new Error('Unexpected success'))
-      }).catch((e) => done())
+      )
+      .then((options) => done(new Error('Unexpected success')))
+      .catch((e) => done())
     })
   })
 

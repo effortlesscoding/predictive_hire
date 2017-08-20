@@ -1,6 +1,7 @@
 require('module-alias/register')
-const Package = require('@web_service/models/package')
+const Package = require('@webService/models/package')
 const _ = require('lodash')
+const OrderException = require('./errors').OrderException
 
 const QUOTE_SUCCESSFUL = 1
 const QUOTE_INVALID_OFFSET = 2
@@ -23,13 +24,13 @@ class OrderFulfillmentOptions {
       if (res === QUOTE_SUCCESSFUL) {
         resolve(this.packages)
       } else {
-        reject(new Error('Could not find the right combinations.'))
+        reject(new OrderException('Could not find the right combinations.'))
       }
     })
   }
 
   validate() {
-    if (!_.isNumber(this.order.size)) throw new Error('Invalid order size')
+    if (!_.isNumber(this.order.size)) throw new OrderException('Invalid order size')
     parseInt(this.order.size)
   }
 

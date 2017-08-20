@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const port = process.env.PORT || 3000
 const app = express()
 
-require('@web_service/api/v1/quotes')(app)
+require('@webService/api/v1/orders')(app)
 
 mongoose.Promise = global.Promise
 mongoose.connect(config.database.url, {
