@@ -18,7 +18,7 @@
   },
   "scripts": {
     "start": "node apps/webService/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "find ./apps/webService -name '*.spec.js' | xargs mocha -R spec"
   },
   "author": "Jeenius <frankensteinruo@gmail.com>",
   "license": "ISC",
