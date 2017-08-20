@@ -3,13 +3,6 @@ const Package = require('@webService/models/package')
 const _ = require('lodash')
 const OrderException = require('./errors').OrderException
 
-const QUOTE_SUCCESSFUL = 1
-const QUOTE_INVALID_OFFSET = 2
-const QUOTE_REMAINING_QUANTITY_EXCEEDED = 3
-const QUOTE_CONTINUING_PROCESSING = 4
-const QUOTE_LOOP_STARTED = 5
-const QUOTE_INVALID_INDEX = 6
-
 class OrderFulfillmentOptions {
 
   async getOptions(order, packages) {
