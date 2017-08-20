@@ -14,7 +14,7 @@ class OrderFulfillmentOptions {
 
   async getOptions(order, packages) {
     this.order = order
-    this.originalPackages = packages 
+    this.originalPackages = packages
     this.validCombinations = []
     this.validate()
     this.countLoop(this.resetPackages(), 0, 0, this.order.size)

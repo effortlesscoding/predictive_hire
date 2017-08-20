@@ -17,12 +17,12 @@ describe('orderFulfillmentOptions', function() {
     })
   })
 
-  describe('3 packages are available', () => {
+  describe.only('3 packages are available', () => {
     const availablePackages = []
     before((done) => {
-      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 7, priceCents: 115}))
-      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 20, priceCents: 225}))
-      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 71, priceCents: 2000}))
+      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 7, priceCents: 115}).toObject({ versionKey: false, }))
+      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 20, priceCents: 225}).toObject({ versionKey: false, }))
+      availablePackages.push(new Package({ productCode: 'PORK-BUN-1', size: 71, priceCents: 2000}).toObject({ versionKey: false, }))
       done()
     })
 
