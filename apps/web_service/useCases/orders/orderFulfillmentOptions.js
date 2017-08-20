@@ -1,5 +1,6 @@
 require('module-alias/register')
 const Package = require('@web_service/models/package')
+const _ = require('lodash')
 
 const QUOTE_SUCCESSFUL = 1
 const QUOTE_INVALID_OFFSET = 2
@@ -17,6 +18,7 @@ class OrderFulfillmentOptions {
     })
     this.validCombinations = []
     return new Promise((resolve, reject) => {
+      this.validate()
       const res = this.startCountingLoop(this.packages, 0, this.order.size)
       if (res === QUOTE_SUCCESSFUL) {
         resolve(this.packages)
@@ -26,15 +28,17 @@ class OrderFulfillmentOptions {
     })
   }
 
+  validate() {
+    if (!_.isNumber(this.order.size)) throw new Error('Invalid order size')
+    parseInt(this.order.size)
+  }
 
   startCountingLoop(packages, index, remainingQuantityForTheLoop) {
     let offset = 0
     let result = QUOTE_LOOP_STARTED
     while (result !== QUOTE_SUCCESSFUL) {
       offset++
-      console.log(`Loop i: ${index} rem: ${remainingQuantityForTheLoop}`)
       result = this.countPackageQuantity(packages, index, offset, remainingQuantityForTheLoop)
-      console.log(`Result i: ${index} rem: ${remainingQuantityForTheLoop} -- ${result}`)
       if (result === QUOTE_INVALID_OFFSET || 
           result === QUOTE_REMAINING_QUANTITY_EXCEEDED ||
           result === QUOTE_INVALID_INDEX) {
