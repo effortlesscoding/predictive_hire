@@ -9,9 +9,9 @@ class Controller {
     const orderCode = req.query.code
     const single = req.query.single
     try {
-      const order = await OrderParser.parse(orderCode)
+      const order = await new OrderParser().parse(orderCode)
       const packages = await Package.find({ productCode: order.productCode, }, '', {lean: true})
-      let options = await OrderFulfillmentOptions.getOptions(order, packages)
+      let options = await new OrderFulfillmentOptions().getOptions(order, packages)
       if (single) {
         const option = options[0].map(PackageSerializer)
         res.success({ option, })

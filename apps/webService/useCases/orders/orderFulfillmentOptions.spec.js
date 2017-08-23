@@ -8,7 +8,7 @@ describe('orderFulfillmentOptions', function() {
 
   describe('packages are empty', () => {
     it('it should prematurely exit with an error', (done) => {
-      OrderFulfillmentOptions.getOptions(
+      new OrderFulfillmentOptions().getOptions(
         { productCode: 'PORK-BUN-1', size: 1, },
         [],
       )
@@ -29,7 +29,7 @@ describe('orderFulfillmentOptions', function() {
     describe('fulfillable requests', () => {
 
       it('should return size7x1 and size71x1 if order of size 78 is supplied', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 78, },
           availablePackages,
         ).then((options) => {
@@ -46,7 +46,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should return 3 combinations if order of size 140 is supplied', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 140, },
           availablePackages,
         ).then((options) => {
@@ -61,7 +61,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should return 35 various combinations of packages, each of which satisfy the 780 order', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 780, },
           availablePackages,
         ).then((options) => {
@@ -76,7 +76,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should respond with 1 empty combination if order size 0 is supplied', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 0, },
           availablePackages,
         )
@@ -96,7 +96,7 @@ describe('orderFulfillmentOptions', function() {
     describe('Unfulfillable requests', () => {
 
       it("should respond with an error if an order with size 12 is supplied that cannot be fulfilled by available packages", (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 12 },
           availablePackages,
         )
@@ -105,7 +105,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should respond with an error if size is not specified', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', },
           availablePackages,
         )
@@ -114,7 +114,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should respond with an error if size is a number but not an integer', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: 0.34, },
           availablePackages,
         )
@@ -123,7 +123,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should respond with an error if size is null', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: null, },
           availablePackages,
         )
@@ -132,7 +132,7 @@ describe('orderFulfillmentOptions', function() {
       })
 
       it('should respond with an error if size is an object', (done) => {
-        OrderFulfillmentOptions.getOptions(
+        new OrderFulfillmentOptions().getOptions(
           { productCode: 'PORK-BUN-1', size: '', },
           availablePackages,
         )

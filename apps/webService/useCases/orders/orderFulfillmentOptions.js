@@ -53,4 +53,4 @@ class OrderFulfillmentOptions {
   }
 }
 
-module.exports = new OrderFulfillmentOptions()
+module.exports = OrderFulfillmentOptions

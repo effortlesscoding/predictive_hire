@@ -22,4 +22,4 @@ class OrderParser {
   }
 }
 
-module.exports = new OrderParser()
+module.exports = OrderParser
