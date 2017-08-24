@@ -1,18 +1,20 @@
 require('module-alias/register')
-const Package = require('@webService/models/package')
 const _ = require('lodash')
 const OrderException = require('./errors').OrderException
 
+const ABORT_LOOP = -1
+const CONTINUE_LOOP = 0
+
 class OrderFulfillmentOptions {
 
-  async getOptions(order, packages) {
+  getOptions(order, packages) {
     this.order = order
     this.originalPackages = packages
-    this.validCombinations = []
+    this.smallestCombination = null
     this.validate()
     this.countLoop(this.resetPackages(), 0, 0, this.order.size)
-    if (this.validCombinations.length > 0) {
-      return this.validCombinations
+    if (this.smallestCombination) {
+      return this.smallestCombination
     } else {
       throw new OrderException('Could not find the right combinations.')
     }
@@ -21,7 +23,7 @@ class OrderFulfillmentOptions {
   validate() {
     if (_.isNil(this.originalPackages)) throw new OrderException('Invalid order packages') 
     if (!(this.originalPackages.length > 0)) throw new OrderException('Invalid order packages') 
-    if (!_.isNumber(this.order.size)) throw new OrderException('Invalid order size')
+    if (!_.isFinite(this.order.size)) throw new OrderException('Invalid order size')
     parseInt(this.order.size)
   }
 
@@ -35,17 +37,37 @@ class OrderFulfillmentOptions {
       const remainder = remainingQuantity - sampleSize
       packages[index].quantity = packageQuantity
       if (remainder === 0) {
-        this.addCombination(packages)
+        const res = this.addCombination(packages)
         packages = this.resetPackages()
+        if (res === ABORT_LOOP) return res
       } else if (index < packages.length - 1) {
-        this.countLoop(packages, index + 1, 0, remainder)
+        const res = this.countLoop(packages, index + 1, 0, remainder)
+        if (res === ABORT_LOOP) return res
       }
       packageQuantity++
     }
   }
 
   addCombination(packages) {
-    this.validCombinations.push(packages.map((p) => ({ ...p, })))
+    const aggregation = packages.reduce((accum, next) => {
+      accum.totalPackages += next.quantity
+      accum.totalPriceCents += next.priceCents * next.quantity
+      return accum
+    }, { totalPackages: 0, totalPriceCents: 0, })
+
+    if (aggregation.totalPackages > 0 &&
+        (!this.smallestCombination || aggregation.totalPackages < this.smallestCombination.size)) {
+      this.smallestCombination = {
+        packages: packages.map((p) => ({ ...p, })),
+        quantity: aggregation.totalPackages,
+        totalPriceCents: aggregation.totalPriceCents,
+      }
+    }
+    if (aggregation.totalPackages === 1) {
+      return ABORT_LOOP
+    } else {
+      return CONTINUE_LOOP
+    }
   }
 
   resetPackages() {
@@ -53,4 +75,4 @@ class OrderFulfillmentOptions {
   }
 }
 
-module.exports = OrderFulfillmentOptions
+module.exports = new OrderFulfillmentOptions()

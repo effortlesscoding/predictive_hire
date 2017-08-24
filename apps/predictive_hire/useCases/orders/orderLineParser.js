@@ -1,12 +1,12 @@
 const OrderException = require('./errors').OrderException
 const _ = require('lodash')
 
-class OrderParser {
-  async parse(orderCode) {
-    const parts = orderCode.split(' ')
+class OrderLineParser {
+  parse(orderLineCode) {
+    const parts = orderLineCode.replace('\n', '').split(' ')
     if (parts.length !== 2) throw new OrderException('Invalid parts length')
     const orderSize = this.orderSize(parts)
-    if (_.isNil(orderSize)) throw new OrderException('Invalid order size')
+    if (_.isNil(orderSize)) throw new OrderException('Invalid order line size')
     return {
       size: orderSize,
       productCode: parts[1],
@@ -15,11 +15,12 @@ class OrderParser {
 
   orderSize(parts) {
     try {
-      return parseInt(parts[0])
+      const value = parseFloat(parts[0])
+      return _.isInteger(value) ? parseInt(value) : undefined
     } catch(e) {
       return undefined
     }
   }
 }
 
-module.exports = OrderParser
+module.exports = new OrderLineParser()
