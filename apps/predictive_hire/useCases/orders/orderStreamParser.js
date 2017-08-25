@@ -1,5 +1,6 @@
 const stream = require('stream')
 const util = require('util')
+const _ = require('lodash')
 const OrderLineParser = require('@predictive_hire/useCases/orders/orderLineParser')
 const OrderLineFulfillment = require('@predictive_hire/useCases/orders/orderLineFulfillment')
 const CurrencyFormatter = require('@predictive_hire/useCases/currency/currencyFormatter')
@@ -14,7 +15,8 @@ class OrderStreamParser extends stream.Transform {
   }
 
   formatOutput(orderLine, fulfillment) {
-    const packagesOutput = fulfillment.packages.reduce((accum, p) => {
+    const packages = _.orderBy(fulfillment.packages, ['size'], ['desc'])
+    const packagesOutput = packages.reduce((accum, p) => {
       if (p.quantity <= 0) return accum
       const linePrice = CurrencyFormatter.format(p.priceCents, '$')
       accum += `  ${p.quantity} x ${p.size} ${linePrice}\n`
