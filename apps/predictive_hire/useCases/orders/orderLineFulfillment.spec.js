@@ -41,6 +41,11 @@ describe('orderLineFulfillment', function() {
         expect(size7.quantity).to.be.equal(1)
         expect(size20.quantity).to.be.equal(0)
         expect(size71.quantity).to.be.equal(1)
+        expect(fulfillment.totalPriceCents).to.equal(
+          size7.priceCents * size7.quantity + 
+          size20.priceCents * size20.quantity + 
+          size71.priceCents * size71.quantity
+        )
         done()
       })
 
@@ -57,6 +62,11 @@ describe('orderLineFulfillment', function() {
         expect(size7.quantity).to.be.equal(0)
         expect(size20.quantity).to.be.equal(7)
         expect(size71.quantity).to.be.equal(0)
+        expect(fulfillment.totalPriceCents).to.equal(
+          size7.priceCents * size7.quantity + 
+          size20.priceCents * size20.quantity + 
+          size71.priceCents * size71.quantity
+        )
         done()
       })
 
@@ -73,6 +83,11 @@ describe('orderLineFulfillment', function() {
         expect(size7.quantity).to.be.equal(0)
         expect(size20.quantity).to.be.equal(3)
         expect(size71.quantity).to.be.equal(10)
+        expect(fulfillment.totalPriceCents).to.equal(
+          size7.priceCents * size7.quantity + 
+          size20.priceCents * size20.quantity + 
+          size71.priceCents * size71.quantity
+        )
         done()
       })
     })

@@ -27,7 +27,7 @@ describe('orderStreamParser', function() {
 
     it('should output expected text with proper currency decimals', () => {
       const text = new OrderStreamParser().formatOutput(input, fulfillment)
-      const expectedText = ['16 TEST-1 $10.00', '  2 x 3 $2.00', '  2 x 5 $2.50', ''].join('\n')
+      const expectedText = ['16 TEST-1 $10.00', '  2 x 5 $2.50', '  2 x 3 $2.00', ''].join('\n')
       expect(text).to.equal(expectedText)
     })
   })
@@ -38,9 +38,13 @@ describe('orderStreamParser', function() {
     const inputStream = stream.Readable()
     inputStream._read = (size) => {}
     const outputStream = through2((chunk, enc, cb) => {
-      const expectedText = ['12 VS5 $27.96', '  4 x 3 $6.99', '  0 x 5 $8.99', ''].join('\n')
-      expect(chunk.toString()).to.equal(expectedText)
-      done()
+      const expectedText = ['12 VS5 $27.96', '  4 x 3 $6.99', ''].join('\n')
+      try {
+        expect(chunk.toString()).to.equal(expectedText)
+        done()
+      } catch(e) {
+        done(e)
+      }
     })
     inputStream.pipe(parser).pipe(outputStream)
     inputStream.emit('data', '12 VS5')
