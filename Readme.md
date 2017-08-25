@@ -19,12 +19,12 @@ The app reads from console.
 ```javascript
 13 CF
 13 CF $25.85
-  1 x 3 $5.95
   2 x 5 $9.95
+  1 x 3 $5.95
 14 MB11
 14 MB11 $53.80
-  2 x 2 $9.95
   2 x 5 $16.95
+  2 x 2 $9.95
 10 VS5
 10 VS5 $17.98
   2 x 5 $8.99
