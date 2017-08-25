@@ -14,16 +14,19 @@ class OrderStreamParser extends stream.Transform {
     this.packages = packages
   }
 
-  formatOutput(orderLine, fulfillment) {
+  _formatOrderLine(accum, p) {
+    if (p.quantity <= 0) return accum
+    const linePrice = CurrencyFormatter.format(p.priceCents, '$')
+    accum += `  ${p.quantity} x ${p.size} ${linePrice}\n`
+    return accum
+  }
+
+  _formatOutput(orderLine, fulfillment) {
     const packages = _.orderBy(fulfillment.packages, ['size'], ['desc'])
-    const packagesOutput = packages.reduce((accum, p) => {
-      if (p.quantity <= 0) return accum
-      const linePrice = CurrencyFormatter.format(p.priceCents, '$')
-      accum += `  ${p.quantity} x ${p.size} ${linePrice}\n`
-      return accum
-    }, '')
+    const packagesSummary = packages.reduce(this._formatOrderLine, '')
     const totalMoney = CurrencyFormatter.format(fulfillment.totalPriceCents, '$')
-    return `${orderLine.size} ${orderLine.productCode} ${totalMoney}\n${packagesOutput}`
+    const orderLineSummary = `${orderLine.size} ${orderLine.productCode} ${totalMoney}`
+    return `${orderLineSummary}\n${packagesSummary}`
   }
 
   _transform(chunk, encoding, cb) {
@@ -31,7 +34,7 @@ class OrderStreamParser extends stream.Transform {
       const orderLine = OrderLineParser.parse(chunk.toString())
       const fulfillment = OrderLineFulfillment.getOptions(orderLine, this.packages[orderLine.productCode])
 
-      this.push(this.formatOutput(orderLine, fulfillment));
+      this.push(this._formatOutput(orderLine, fulfillment));
     } catch (e) {
       this.push(`Error -- ${e.message}\n`)
     }

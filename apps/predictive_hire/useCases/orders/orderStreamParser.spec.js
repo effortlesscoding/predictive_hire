@@ -9,7 +9,7 @@ const expect = require('chai').expect
 
 describe('orderStreamParser', function() {
 
-  describe('formatOutput', () => {
+  describe('_formatOutput', () => {
     let input, fulfillment
     before(() => {
       input = {
@@ -26,7 +26,7 @@ describe('orderStreamParser', function() {
     })
 
     it('should output expected text with proper currency decimals', () => {
-      const text = new OrderStreamParser().formatOutput(input, fulfillment)
+      const text = new OrderStreamParser()._formatOutput(input, fulfillment)
       const expectedText = ['16 TEST-1 $10.00', '  2 x 5 $2.50', '  2 x 3 $2.00', ''].join('\n')
       expect(text).to.equal(expectedText)
     })
