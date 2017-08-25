@@ -4,29 +4,28 @@ Please use nvm and type "nvm use" to use the node version from .nvmrc.
 
 If you use older Node, the application will not run because it is using some of the latest Javascript features.
 
-# Configuring database access
+# Configuring packages
 
-Please have your own mongodb somewhere, and modify the config/database.js with your username and password. By default, it is trying to read them from environmental variables PH_DB_USERNAME and PH_DB_PASSWORD.
+The app does not use a database, so the data is stored in samples/packages.js. Feel free to play around with it.
 
-# Populating Database
+# Running the app
 
-node tasks/packages.js
+Type in "npm start" which is a shorthand for "node apps/predictive_hire"
 
-# Running testss
+# Sample Input Output
 
-npm test
+The app reads from console.
 
-# Running the application
-
-npm start
-
-# Sample endpoint
-
-http(s)://{Your URL + PORT}/api/v1/orders/options?code=5%20CF
-
-Ex.: http://localhost:3000/api/v1/orders/options?code=5%20CF
-
-Example response:
-```json
-{"options":[[{"productCode":"CF","size":3,"priceCents":595,"quantity":0},{"productCode":"CF","size":5,"priceCents":995,"quantity":1},{"productCode":"CF","size":9,"priceCents":1699,"quantity":0}]]}
+```javascript
+13 CF
+13 CF $25.85
+  1 x 3 $5.95
+  2 x 5 $9.95
+14 MB11
+14 MB11 $53.80
+  2 x 2 $9.95
+  2 x 5 $16.95
+10 VS5
+10 VS5 $17.98
+  2 x 5 $8.99
 ```
